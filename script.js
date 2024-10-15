@@ -18,8 +18,8 @@ document.getElementById('searchButton').addEventListener('click', function() {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
 
-        // Variable para almacenar dónde se encontró el dato
         let foundInSheet = null;
+        let foundRow = null;  // Aquí almacenaremos la fila completa donde se encontró el dato
 
         // Recorremos las 3 hojas: GCABA, PDC, IVC
         ['GCABA', 'PDC', 'IVC'].forEach(sheetName => {
@@ -28,21 +28,54 @@ document.getElementById('searchButton').addEventListener('click', function() {
                 const jsonData = XLSX.utils.sheet_to_json(sheet);
                 
                 // Buscar el término dentro de la hoja
-                const found = jsonData.some(row => 
-                    Object.values(row).some(val => String(val).toLowerCase().includes(searchTerm.toLowerCase()))
-                );
-                
-                if (found) {
-                    foundInSheet = sheetName;
-                }
+                jsonData.forEach(row => {
+                    if (Object.values(row).some(val => String(val).toLowerCase().includes(searchTerm.toLowerCase()))) {
+                        foundInSheet = sheetName;
+                        foundRow = row;  // Guardamos la fila encontrada
+                    }
+                });
             }
         });
 
-        // Mostrar resultado en el div 'result'
         const resultDiv = document.getElementById('result');
-        if (foundInSheet) {
-            resultDiv.innerHTML = `Dato encontrado en la hoja: <strong>${foundInSheet}</strong>`;
-            resultDiv.style.color = 'green';
+        resultDiv.innerHTML = ''; // Limpiar resultados anteriores
+
+        if (foundInSheet && foundRow) {
+            if (foundInSheet === 'GCABA') {
+                resultDiv.innerHTML = `
+                    Dato encontrado en la hoja: <strong>${foundInSheet}</strong><br>
+                    CUIL: ${foundRow['CUIL']}<br>
+                    CARGO: ${foundRow['CARGO']}<br>
+                    AYN: ${foundRow['AYN']}<br>
+                    COD_REP: ${foundRow['COD_REP']}<br>
+                    DESC_REP: ${foundRow['DESC_REP']}<br>
+                    MINISTERIO: ${foundRow['MINISTERIO']}<br>
+                    CAR_SIT_REV: ${foundRow['CAR_SIT_REV']}
+                `;
+                resultDiv.style.color = 'green';
+            } else if (foundInSheet === 'PDC') {
+                resultDiv.innerHTML = `
+                    Dato encontrado en la hoja: <strong>${foundInSheet}</strong><br>
+                    CUIL: ${foundRow['CUIL']}<br>
+                    CARGO: ${foundRow['CARGO']}<br>
+                    AYN: ${foundRow['AYN']}<br>
+                    COD_REP: ${foundRow['COD_REP']}<br>
+                    DESC_REP: ${foundRow['DESC_REP']}<br>
+                    MINISTERIO: ${foundRow['MINISTERIO']}
+                `;
+                resultDiv.style.color = 'green';
+            } else if (foundInSheet === 'IVC') {
+                resultDiv.innerHTML = `
+                    Dato encontrado en la hoja: <strong>${foundInSheet}</strong><br>
+                    CUIL: ${foundRow['CUIL']}<br>
+                    CARGO: ${foundRow['CARGO']}<br>
+                    AYN: ${foundRow['AYN']}<br>
+                    COD_REP: ${foundRow['COD_REP']}<br>
+                    DESC_REP: ${foundRow['DESC_REP']}<br>
+                    MINISTERIO: ${foundRow['MINISTERIO']}
+                `;
+                resultDiv.style.color = 'green';
+            }
         } else {
             resultDiv.innerHTML = 'Dato no encontrado en ninguna hoja.';
             resultDiv.style.color = 'red';
