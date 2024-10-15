@@ -43,7 +43,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
         if (foundInSheet && foundRow) {
             if (foundInSheet === 'GCABA') {
                 resultDiv.innerHTML = `
-                    Dato encontrado en la hoja: <strong>${foundInSheet}</strong><br>
+                    Corresponde al entorno: <strong>${foundInSheet}</strong><br>
                     CUIL: ${foundRow['CUIL']}<br>
                     CARGO: ${foundRow['CARGO']}<br>
                     AYN: ${foundRow['AYN']}<br>
@@ -55,7 +55,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
                 resultDiv.style.color = 'green';
             } else if (foundInSheet === 'PDC') {
                 resultDiv.innerHTML = `
-                    Dato encontrado en la hoja: <strong>${foundInSheet}</strong><br>
+                    Corresponde al entorno: <strong>${foundInSheet}</strong><br>
                     CUIL: ${foundRow['CUIL']}<br>
                     CARGO: ${foundRow['CARGO']}<br>
                     AYN: ${foundRow['AYN']}<br>
@@ -66,7 +66,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
                 resultDiv.style.color = 'green';
             } else if (foundInSheet === 'IVC') {
                 resultDiv.innerHTML = `
-                    Dato encontrado en la hoja: <strong>${foundInSheet}</strong><br>
+                    Corresponde al entorno: <strong>${foundInSheet}</strong><br>
                     CUIL: ${foundRow['CUIL']}<br>
                     CARGO: ${foundRow['CARGO']}<br>
                     AYN: ${foundRow['AYN']}<br>
@@ -77,7 +77,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
                 resultDiv.style.color = 'green';
             }
         } else {
-            resultDiv.innerHTML = 'Dato no encontrado en ninguna hoja.';
+            resultDiv.innerHTML = 'Lo siento, dato no encontrado.';
             resultDiv.style.color = 'red';
         }
     };
